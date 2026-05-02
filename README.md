@@ -1,83 +1,203 @@
-# AI-Social-Media-Agent
-一个基于多 Agent 协作的社媒内容生产与运营自动化系统，支持从选题、内容生成、发布到数据复盘的全链路自动化。
-📌 项目背景
+# 🤖 AI 社媒自动化系统 (AI Social Media Agent)
 
-在实际社媒运营过程中，存在以下核心问题：
+> 🎯 基于 Multi-Agent Pipeline 的 AI 社交媒体内容自动化生成系统 Demo
 
-内容选题依赖人工经验，缺乏数据驱动
-文案与素材生产耗时高（单条内容 40~60 分钟）
-多平台适配成本高（小红书 / 微博 / 公众号 等）
-数据反馈滞后，难以形成有效优化闭环
+一个开源 Demo 项目，展示如何用 AI Agent 架构实现社媒运营全链路自动化：从选题、内容生成、素材匹配、发布安排到数据分析。
 
-本项目旨在通过 AI Agent 架构，实现社媒运营流程的自动化与规模化。
+## ✨ 核心功能
 
-🧠 系统架构（Multi-Agent）
+- **🧠 AI 内容生成** - 输入运营目标，5 个 Agent 自动串联生成完整内容方案
+- **📊 小红书数据分析** - 接入小红书开放平台 API，实时追踪笔记表现
+- **👥 多角色管理** - 管理员/用户双角色，权限隔离
+- **⚙️ AI 接口配置** - 支持 OpenAI 兼容 API（可对接任何 LLM 服务）
+- **📱 多平台运营** - 覆盖小红书、抖音、微博、微信公众号
 
-系统基于多 Agent 协同设计，每个 Agent 负责不同环节：
+## 🏗️ 技术栈
 
-1️⃣ Topic Agent（选题 Agent）
-基于热点数据与历史表现生成选题
-支持关键词趋势分析
-自动排序优先级
-2️⃣ Content Agent（内容生成 Agent）
-多平台文案生成（支持不同风格）
-自动生成多个版本用于 A/B 测试
-支持长链路推理优化表达
-3️⃣ Media Agent（素材 Agent）
-自动匹配封面图/配图
-支持调用图像生成工具（如 SD / DALL·E）
-管理素材库
-4️⃣ Publishing Agent（发布 Agent）
-自动排期发布
-根据历史数据推荐最佳发布时间
-支持多平台分发
-5️⃣ Analytics Agent（数据分析 Agent）
-自动分析阅读/点赞/转化数据
-内容效果归因
-反向优化选题与生成策略（闭环）
-🔄 工作流程（End-to-End Pipeline）
-选题生成 → 内容生产 → 素材匹配 → 自动发布 → 数据分析 → 策略优化
+| 层级 | 技术 |
+|------|------|
+| 后端 | Rust + Axum + Tokio |
+| 前端 | Vue 3 + Vite + Element Plus + Pinia |
+| 通信 | REST API (JSON) |
+| 存储 | 内存 HashMap（可扩展至 Redis/DB） |
+| AI | OpenAI 兼容 API |
+| 数据源 | 小红书开放平台 API |
 
-系统通过 Agent 协作，实现完整自动化链路，并支持持续优化。
+## 🔄 Agent Pipeline 流程
 
-⚙️ 技术特点
-✅ 多 Agent 协作架构
-✅ 长链路推理（Chain-of-Thought）
-✅ 工具调用（搜索 / 图像生成 / API）
-✅ 数据驱动优化闭环
-✅ 可扩展至更多平台
-📊 当前效果（实验环境）
+```
+用户输入目标 → Topic Agent → Content Agent → Media Agent → Publish Agent → Analytics Agent
+                   ↓              ↓              ↓              ↓              ↓
+               3个选题       9个内容版本      3个媒体资源    9个发布计划    数据分析预测
+```
 
-以下为测试与内部使用数据：
+| Agent | 输入 | 输出 | 说明 |
+|-------|------|------|------|
+| **TopicAgent** | 运营目标 | 3 个选题 | 根据目标生成多平台选题方案 |
+| **ContentAgent** | 选题列表 | 9 个内容版本 | 每个选题生成 3 种风格（专业/幽默/情感） |
+| **MediaAgent** | 选题列表 | 3 个媒体资源 | 匹配配图资源（支持并发执行） |
+| **PublishAgent** | 内容列表 | 9 个发布计划 | 安排多平台发布时间 |
+| **AnalyticsAgent** | 运营目标 | 分析数据 | 生成浏览/点赞/转化等指标预测 |
 
-内容生产效率提升约 80%
-单条内容生成时间：50min → 5~10min
-互动率提升约 30%+
-爆款内容产出率提升 2x
-日均自动生成内容：20+条
-支持多平台同步运营
-🧪 使用方式（规划中）
-# 克隆项目
-git clone https://github.com/yourname/ai-social-agent.git
+## 📁 项目结构
 
-# 安装依赖（待补充）
-pip install -r requirements.txt
+```
+AI-Social-Media-Agent/
+├── backend/                          # Rust 后端
+│   ├── Cargo.toml                   # 依赖配置
+│   ├── .env.example                 # 环境变量模板
+│   ├── Dockerfile
+│   └── src/
+│       ├── main.rs                  # 入口：Axum 服务启动
+│       ├── api/handlers.rs          # REST API 路由处理器
+│       ├── agents/                  # 5 个 Agent 模块
+│       │   ├── topic_agent.rs       # 选题生成
+│       │   ├── content_agent.rs     # 内容生成
+│       │   ├── media_agent.rs       # 媒体匹配
+│       │   ├── publish_agent.rs     # 发布安排
+│       │   └── analytics_agent.rs   # 数据分析
+│       ├── ai_client/mod.rs         # OpenAI 兼容 API 客户端
+│       ├── auth/mod.rs              # 用户认证与角色系统
+│       ├── config/mod.rs            # 系统配置管理
+│       ├── models/                  # 数据模型
+│       ├── orchestrator/mod.rs      # Pipeline 编排器
+│       └── xhs/mod.rs               # 小红书数据分析模块
+├── frontend/                         # Vue 3 前端
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── Dockerfile
+│   └── src/
+│       ├── App.vue                  # 根组件（侧边栏导航）
+│       ├── api/index.js             # Axios API 封装（含 Token 拦截）
+│       ├── store/index.js           # Pinia 状态管理
+│       ├── router/index.js          # 路由（含登录守卫）
+│       └── pages/
+│           ├── Login.vue            # 登录页
+│           ├── Dashboard.vue        # 数据总览
+│           ├── Generate.vue         # 内容生成（核心）
+│           ├── Tasks.vue            # 任务列表
+│           ├── Result.vue           # 结果详情
+│           ├── XhsAnalytics.vue     # 小红书数据分析
+│           └── Admin.vue            # 管理后台
+├── docker-compose.yml
+└── README.md
+```
 
-# 启动系统（开发中）
-python main.py
-🛠️ Roadmap
- 接入真实社媒平台 API（小红书 / 抖音 / Twitter）
- 增强数据分析能力（更精细归因）
- 支持多账号矩阵运营
- 引入强化学习优化内容策略
- UI 控制台（Dashboard）
-📎 项目定位
+## 🌐 API 设计
 
-该项目主要用于探索：
+### 认证
+| 方法 | 路径 | 说明 | 权限 |
+|------|------|------|------|
+| POST | `/api/auth/login` | 用户登录 | 公开 |
+| GET | `/api/auth/me` | 获取当前用户 | 登录 |
 
-AI Agent 在内容生产领域的应用
-自动化增长系统设计
-多 Agent 协同与任务拆解能力
-🤝 贡献 & 交流
+### 管理员
+| 方法 | 路径 | 说明 | 权限 |
+|------|------|------|------|
+| GET | `/api/admin/users` | 用户列表 | Admin |
+| POST | `/api/admin/users` | 创建用户 | Admin |
+| DELETE | `/api/admin/users/:username` | 删除用户 | Admin |
+| GET | `/api/admin/config` | 系统配置 | Admin |
 
-欢迎交流与合作，一起探索 AI + 内容增长的更多可能。
+### 内容生成
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| POST | `/api/generate` | 创建生成任务 |
+| GET | `/api/task/:id` | 查询任务状态 |
+| GET | `/api/tasks` | 任务列表 |
+| GET | `/api/result/:id` | 获取完整结果 |
+| GET | `/api/stats` | 统计数据 |
+
+### 小红书分析
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | `/api/xhs/overview` | 数据概览 |
+| GET | `/api/xhs/notes` | 笔记列表 |
+| GET | `/api/xhs/notes/:id` | 笔记详情 |
+
+## 🚀 快速开始
+
+### 1. 克隆项目
+
+```bash
+git clone https://github.com/Ychanabc/AI-Social-Media-Agent.git
+cd AI-Social-Media-Agent
+```
+
+### 2. 配置环境变量（可选）
+
+```bash
+cp backend/.env.example backend/.env
+# 编辑 backend/.env，填入你的 API Key
+```
+
+### 3. 启动后端
+
+```bash
+cd backend
+cargo run
+# 后端将在 http://localhost:3000 启动
+```
+
+### 4. 启动前端（新终端）
+
+```bash
+cd frontend
+npm install
+npm run dev
+# 前端将在 http://localhost:5173 启动
+```
+
+### 5. 登录使用
+
+打开 http://localhost:5173，使用以下账号登录：
+
+| 账号 | 密码 | 角色 |
+|------|------|------|
+| admin | admin123 | 管理员（可访问管理后台） |
+| user | user123 | 普通用户 |
+
+### Docker 部署（可选）
+
+```bash
+docker-compose up --build
+```
+
+## ⚙️ AI 接口配置
+
+编辑 `backend/.env` 文件：
+
+```env
+# OpenAI 兼容 API（支持任何兼容服务）
+AI_PROVIDER=openai
+OPENAI_API_KEY=sk-your-key-here
+OPENAI_MODEL=gpt-4o-mini
+OPENAI_BASE_URL=https://api.openai.com/v1
+```
+
+支持的 AI 服务：
+- OpenAI（GPT-4o / GPT-4o-mini）
+- Azure OpenAI
+- DeepSeek
+- 任何 OpenAI 兼容 API
+
+## 📱 小红书 API 配置
+
+1. 前往 [小红书开放平台](https://open.xiaohongshu.com) 注册开发者账号
+2. 创建应用，获取 App ID 和 App Secret
+3. 编辑 `backend/.env`：
+
+```env
+XHS_APP_ID=your-app-id
+XHS_APP_SECRET=your-app-secret
+```
+
+当前使用 mock 数据演示，配置真实 API 后自动切换。
+
+## 📄 License
+
+MIT
+
+## 🤝 Contributing
+
+欢迎提 Issue 和 PR！

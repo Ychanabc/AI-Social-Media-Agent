@@ -1,0 +1,186 @@
+:root {
+  --primary-color: #409eff;
+  --bg-color: #f5f7fa;
+  --sidebar-bg: #1d1e1f;
+  --sidebar-width: 220px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: #303133;
+}
+
+#app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* 侧边栏样式 */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--sidebar-bg);
+  color: #fff;
+  padding: 20px 0;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar .logo {
+  padding: 0 20px 30px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
+}
+
+.sidebar .logo h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #409eff;
+}
+
+.sidebar .logo p {
+  font-size: 12px;
+  color: #909399;
+  margin-top: 5px;
+}
+
+.sidebar-nav {
+  list-style: none;
+}
+
+.sidebar-nav li {
+  padding: 0;
+}
+
+.sidebar-nav li a {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  color: #bfcbd9;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s;
+  gap: 10px;
+}
+
+.sidebar-nav li a:hover,
+.sidebar-nav li a.router-link-active {
+  background: rgba(64, 158, 255, 0.15);
+  color: #409eff;
+}
+
+/* 主内容区 */
+.main-content {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  padding: 24px;
+  min-height: 100vh;
+}
+
+/* 卡片样式 */
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* 页面标题 */
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1d1e1f;
+}
+
+.page-header p {
+  color: #909399;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+/* 结果展示 */
+.result-section {
+  margin-bottom: 24px;
+}
+
+.result-section .section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Agent 流程步骤 */
+.pipeline-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.pipeline-step {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: #fff;
+  border: 2px solid #e4e7ed;
+  min-width: 100px;
+  transition: all 0.3s;
+}
+
+.step-card.active {
+  border-color: #409eff;
+  background: rgba(64, 158, 255, 0.05);
+}
+
+.step-card.done {
+  border-color: #67c23a;
+  background: rgba(103, 194, 58, 0.05);
+}
+
+.step-icon {
+  font-size: 24px;
+}
+
+.step-name {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.step-arrow {
+  font-size: 20px;
+  color: #c0c4cc;
+  padding: 0 8px;
+}
